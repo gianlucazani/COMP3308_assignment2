@@ -10,3 +10,19 @@ class Test(TestCase):
         a = [0.1, 0.003, 0.99]
         b = [0.1, 0.003, 0.99]
         self.assertEqual(knn_lib.euclidean_distance(a, b), 0.0)
+
+    def test_get_best_k_neighbours_classes(self):
+        best_k_neighbours = list([(1, "yes"),
+                                 (2, "no"),
+                                 (3, "yes"),
+                                 (3.0, "no")])
+
+        self.assertEqual(knn_lib.get_best_k_neighbours_classes(best_k_neighbours), ["yes", "no", "yes", "no"])
+
+    def test_predict_class(self):
+        best_k_neighbours = list([(1, "yes"),
+                                 (2, "no"),
+                                 (3, "yes"),
+                                 (3.0, "no")])
+        best_k_neighbours_classes = knn_lib.get_best_k_neighbours_classes(best_k_neighbours)
+        self.assertEqual(knn_lib.predict_class(best_k_neighbours_classes), "yes")
