@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from assignment2.lib.nb_lib import get_attributes_statistics, series_to_list, get_classes_statistics, predict_class
+from assignment2.lib.nb_lib import get_attributes_statistics, series_to_list, get_classes_statistics, classify
 
 
 def classify_nb(training_filename, testing_filename):
@@ -18,6 +18,6 @@ def classify_nb(training_filename, testing_filename):
 
     classifications = list()
     for testing_example in testing_set:
-        classification = predict_class(testing_example, attributes_statistics, classes_statistics, classes_column)
+        classification = classify(testing_example, attributes_statistics, classes_statistics, classes_column)
         classifications.append(classification)
     return classifications

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 
-def predict_class(testing_example, attributes_statistics, classes_statistics, classes_column):
+def classify(testing_example, attributes_statistics, classes_statistics, classes_column):
     """
     Predicts the most probable class among all the possible ones and returns the class string
     :param testing_example: example we want to test
