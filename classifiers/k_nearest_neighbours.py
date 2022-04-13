@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from assignment2.classes.ReverseFixedSizePriorityQueue import ReverseFixedSizePriorityQueue
-from assignment2.lib.knn_lib import euclidean_distance, get_best_k_neighbours_classes, predict_class
+from assignment2.lib.knn_lib import euclidean_distance, get_best_k_neighbours_classes, predict_class, series_to_array
 
 
 def classify_nn(training_filename, testing_filename, k):
