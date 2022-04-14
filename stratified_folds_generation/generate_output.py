@@ -1,6 +1,6 @@
 import pandas as pd
 
-from assignment2.stratified_folds_generation.stratified_cross_selection import generate_stratified_folds
+from assignment2.stratified_folds_generation.stratified_cross_folding import generate_stratified_folds
 
 data_set = pd.read_csv("../data/pima-indians-diabetes.csv", header=None)
 
