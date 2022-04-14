@@ -31,7 +31,7 @@ def get_best_k_neighbours_classes(best_k_neighbours: ReverseFixedSizePriorityQue
     return classes
 
 
-def predict_class(best_k_classes: list(str)):
+def predict_class(best_k_classes: list):
     """
     Counts the majority class in classes array
     :param best_k_classes: array of classes (of the k best neighbours)

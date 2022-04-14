@@ -1,111 +1,122 @@
 import numpy as np
+import pandas
 import pandas as pd
 
 
-def classify(testing_example, attributes_statistics, classes_statistics, classes_column):
+def classify(testing_example: pandas.Series, attributes_statistics: dict, classes_statistics: dict,
+             existing_classes: list):
     """
     Predicts the most probable class among all the possible ones and returns the class string
-    :param testing_example: example we want to test
+    :param existing_classes: list of existing classes
+    :param testing_example: pandas.Series example we want to test
     :param attributes_statistics: attributes statistics in dictionary form (key = (attribute, class), value = (average, standard deviation))
     :param classes_statistics: dictionary in the form (key = class, value = probability)
-    :param classes_column: classes column
     :return: predicted class string
     """
     most_probable_class = [0.0, ""]
-    for existing_class in list(set(classes_column)):
-        class_probability = probability_of_belonging_to_class(existing_class, testing_example, attributes_statistics, classes_statistics)
+    for cls in existing_classes:
+        class_probability = probability_of_belonging_to_class(cls, testing_example, attributes_statistics,
+                                                              classes_statistics)
         if class_probability >= most_probable_class[0]:
-            if class_probability == most_probable_class[0] and existing_class == "no":
+            if class_probability == most_probable_class[0] and cls == "no":
                 continue
             else:
-                most_probable_class = [class_probability, existing_class]
+                most_probable_class = [class_probability, cls]
     return most_probable_class[1]
 
 
-def probability_of_belonging_to_class(class_to_calculate, new_example, attributes_statistics, classes_statistics):
+def probability_of_belonging_to_class(class_to_calculate: str, new_example: pandas.Series, attributes_statistics: dict,
+                                      classes_statistics: dict):
     """
     Returns the probability of the new example to belong to a class, uses the probability density function
     :param class_to_calculate: class to get the probability to belong to
-    :param new_example: new testing example
+    :param new_example: pandas.Series example we are testing
     :param attributes_statistics: attributes statistics in dictionary form (key = (attribute, class), value = (average, standard deviation))
     :param classes_statistics: dictionary in the form (key = class, value = probability)
     :return: float representing the probability
     """
     result = 1
-    for i in range(len(new_example)):
+    for i, item in new_example.iteritems():
         attribute_average, attribute_standard_deviation = attributes_statistics[(i, class_to_calculate)]
-        result *= probability_density(attribute_average, attribute_standard_deviation, new_example[i])
+        result *= probability_density(attribute_average, attribute_standard_deviation, item)
     result *= classes_statistics[class_to_calculate]
     return result
 
 
-def probability_density(attribute_average, attribute_standard_deviation, new_example_attribute_value):
+def probability_density(attribute_average: float, attribute_standard_deviation: float,
+                        new_example_attribute_value: float):
     e = np.exp(- (new_example_attribute_value - attribute_average) ** 2 / (2 * attribute_standard_deviation ** 2))
     f = 1 / (attribute_standard_deviation * np.sqrt(2 * np.pi))
     return f * e
 
 
-def get_attributes_statistics(training_set, classes_column):
+def get_attributes_statistics(training_set: pandas.DataFrame):
     """
-    Returns a dictionary with attributes statistics in the form (key = (attribute, class), value = (average, standard deviation))
-    So you will get a dictionary where for each attribute and for each class the average and standard deviation are calculated
-    :param training_set: training set
-    :param classes_column: classes column taken from .csv file
+    Returns a dictionary with all attributes statistics starting from the whole DataFrame set
+    :param training_set: pandas.DataFrame training set
     :return: dictionary in the form (key = (attribute, class), value = (average, standard deviation))
     """
     attributes_statistics = dict()
-    for existing_class in list(set(classes_column)):
-        filtered_training_set = filter_set_by_class(training_set, existing_class, classes_column)
-        for column_index in range(len(filtered_training_set[0])):
-            column_values = filtered_training_set[:, column_index]
-            attribute_average = calculate_average(column_values)
-            attribute_standard_deviation = calculate_sample_standard_deviation(attribute_average, column_values)
-
-            attributes_statistics[(column_index, existing_class)] = (attribute_average, attribute_standard_deviation)
-
+    existing_classes = get_existing_classes(series_to_list(training_set["class"]))
+    for cls in existing_classes:  # for each existing class
+        filtered_training_set = filter_set_by_class(training_set, cls)  # filter the training set based on that class
+        for column_name in filtered_training_set:  # for each attribute (column_name)
+            if column_name == "class":  # but not for class attribute
+                continue
+            column = filtered_training_set[column_name]  # extract all subset's attribute values
+            attribute_average = column.mean() # calculate average of the values of the current attribute
+            attribute_standard_deviation = calculate_sample_standard_deviation(attribute_average,
+                                                                               series_to_list(column))  # calculate standard deviation of the values of the current attribute
+            attributes_statistics[(column_name, cls)] = (attribute_average, attribute_standard_deviation)  # insert statistics into result dictionary (key = (column_name a.k.a attribute, class), value = (average, deviation))
     return attributes_statistics
 
 
-def get_classes_statistics(classes_column):
+def get_classes_statistics(training_set: pandas.DataFrame):
     """
     Takes the classes column and returns the probabilities for those classes to be in the training set
-    :param classes_column: classes column of the training set
+    :param training_set: DataFrame training set
     :return: dictionary in the form (key = class, value = probability)
     """
     classes_statistics = dict()  # (key = class, value = probability) e.g. ("yes") -> 0.76
-    number_of_training_examples = len(classes_column)
-    for existing_class in list(set(classes_column)):
-        classes_statistics[existing_class] = classes_column.count(existing_class) / number_of_training_examples
+    classes_column = series_to_list(training_set["class"]) # get column of all classes
+    number_of_training_examples = len(classes_column)  # get total number of data points in the set
+    for existing_class in list(set(classes_column)):  # for each class
+        classes_statistics[existing_class] = classes_column.count(existing_class) / number_of_training_examples  # calculate probability of that class over the total of datapoints
     return classes_statistics
 
 
-def filter_set_by_class(training_set, filter_class, classes_array):
+def filter_set_by_class(training_set: pandas.DataFrame, filter_class: str):
     """
-    Returns the set filtered by the class passed. The returned matrix is a subset of the original, also without the class column
-    :param training_set: original training set to filter
-    :param filter_class: class name to filter on
-    :param classes_array: classes column taken from csv
-    :return: sub-matrix without class col
+    Given a pandas.DataFrame with column named "class", returns a subset DataFrame with only the row that satisfy class = filter_class
+    :param training_set: pandas.DataFrame to filter
+    :param filter_class: class filter
+    :return: filtered subset DataFrame
     """
-    result = list()
-    for index, example in enumerate(training_set):
-        if classes_array[index] == filter_class:
-            result.append(example[:-1])
-    return np.array(result)
+    return training_set.loc[training_set["class"] == filter_class]
 
 
-def series_to_list(series):
+def series_to_list(series: pandas.Series):
+    """
+    Converts pandas.Series to list()
+    :param series: pandas.Series
+    :return: list()
+    """
     result = list()
     for index, item in series.iteritems():
         result.append(item)
     return result
 
 
-def calculate_average(values):
-    return np.average(values)
+def get_existing_classes(classes_list: list):
+    """
+    Returns the values in the classes_list counted only once
+    :param classes_list: list of classes (with duplicates)
+    :return: list of non duplicate classes
+    """
+    return list(set(classes_list))
 
 
-def calculate_sample_standard_deviation(average, values):
+def calculate_sample_standard_deviation(average: float, values: list):
     sum_of_distances_from_average = 0
     for value in values:
         sum_of_distances_from_average += (value - average) ** 2
