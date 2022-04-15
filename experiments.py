@@ -26,14 +26,14 @@ testing_set = pd.read_csv("data/test_set_for_accuracy.csv", header=None)
 
 print("KNN ACCURACY")
 print("with cross validation")
-print(s_fold_cross_validate(classify_nn, training_set, 10, 15))
+print(s_fold_cross_validate(classify_nn, training_set, 10, 1))
 print("without cross validation")
-print(measure_accuracy(classify_nn, training_set, testing_set, 15))
+# print(measure_accuracy(classify_nn, training_set, testing_set, 15))
 print("NAIVE BAYES ACCURACY")
 print("with cross validation (10 folds)")
-print(s_fold_cross_validate(classify_nb, training_set, 10))
+# print(s_fold_cross_validate(classify_nb, training_set, 10))
 print("without cross validation")
-print(measure_accuracy(classify_nb, training_set, testing_set))
+# print(measure_accuracy(classify_nb, training_set, testing_set))
 
 
 
