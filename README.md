@@ -27,7 +27,9 @@ Now we will dive deep into the performance of the classifiers. We will first mea
 Note that all the following tests have been run with 10-fold cross-validation.
 
 
-### Results with all ttributes
+### Results with all attributes
+
+#### K-Nearest Neighbours and Naive Bayes
 
 In this section we will explore results of classifiers when working on the full attributes set. In the following plot, results from my KNN, my NB, Weka's KNN and Weka's NB are put together and ready for a deeper discussion:
 
@@ -35,33 +37,31 @@ In this section we will explore results of classifiers when working on the full 
   <img src="images/my_vs_weka.png" width="490"/>
 </p>
 
+Let's first consider the two K-Nearest Neighbours classifiers:
+- My KNN: we can see that the accuracy of the classifier grows with the number of neighbours taken into consideration, then it is quite stable stable once reached K = 15. This classifier has its minimum accuracy of 68.48% for K = 1 and its maximum of 77.09% for K = 25. 
+- Weka's KNN: also in this case the accuracy grows with the increasing of the number of neighbours and stabilises after K = 15. The Weka's classifier has its minimum efficiency of 67.83% for K = 1 and it maximum of 75.78% for K = 30.
+
+Overall, for each tested value of K, my classifier is more accurate than Weka's one. <br>
+
+Regarding the Naive Bayes classifiers:
+- My NB: has an accuracy of 75.26%
+- Weka's NB: has an accuracy of 75.13%
+
+Also in this case my classifier is more accurate than Weka's one, even if the difference in accuracy is not meaningful.<br>
+
+From the plot above we can also see that my K-Nearest Neighbour classifier is almost always the best choice for classification in the given domain, only for small K values (K < 5) it is convenient to use Naive Bayes (both mine and Weka's). When comparing the two Naive Bayes classifiers with Weka's KNN, we can see that it is more accurate until K reaches the value of 13, point after which Weka's KNN, Weka's BN and my BN perform almost the same.<br>
+
+#### All classifiers together
+
+Now we will compare the results given by all the classifiers introduces before, and we will visualize them in the same plot for a better intuitive understanding of the comparison:
+
 
 
 #### Performance of my K-Nearest Neighbours classifier
 
-For measuring the classifier performance I decided to run tests both changing the parameter <i>K </i> (i.e. how many nearest neighbours do we take into consideration)
-and the number of folds <i> S </i> we want to split the dataset into during the s-fold cross-validation. <br>
-
-First, let's see how the classifier performs with changes in K parameter. The parameter will change within [0, 30] with steps of 5:
-
-<p align="center">
-  <img src="images/myknn.png" width="480"/>
-</p>
-
-We can see how the accuracy generally grows with the number of neighbours taken into consideration, then it is quite stable stable once reached K = 15. This classifier has its minimum accuracy of 68.48% for K = 1 and its maximum of 77.09% for K = 25. 
-
 result -> [68.486, 75.52, 75.517, 76.436, 75.923, 77.094, 76.575]
 
 #### Efficiency of Weka's K-Nearest Neighbours classifier
-
-The test on the Weka's classifier is performed with same K values used for testing mine, and this is how it
-performs with changing K:
-
-<p align="center">
-  <img src="images/wekaknn.png" width="490"/>
-</p>
-
-We can see that also in this case the accuracy grows with the increasing of the number of neighbours and stabilises after K = 15. The Weka's classifier has its minimum efficiency of 67.83% for K = 1 and it maximum of 75.78% for K = 30.
 
 results -> k values = [1, 5, 10, 15, 20, 25, 30] -> [67.8385, 74.4792, 74.2188, 75.5208, 75.3906, 74.8698, 75.7813]
 
