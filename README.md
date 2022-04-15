@@ -12,11 +12,7 @@ In this assignment you will implement the K-Nearest Neighbour and Naive Bayes al
 
 ## Results and discussion
 
-Now we will dive deep into the performance of the classifiers. We will first measuer accuracies keeping into consideration all the attributes, and then we will repeat all the analysis with only selected attributes.
-
-### Results and results discussion (all attributes)
-
-The following sections are all about results, and results comparisons with all the attributes taken into consideration. I wanted to keep the frist two sub-sections dedicated to the results of the K-Nearest Neighbours classifier, which will be tested with several K values and then their performances will be plotted. Further in this chapter we will compare KNN and NB classifiers (mine and Weka's) all together, and then compare results of the following classifiers:
+Now we will dive deep into the performance of the classifiers. We will first measuer accuracies keeping into consideration all the attributes, and then we will repeat all the analysis with only selected attributes. In both cases we will first analyze results of my KNN, my NB, Weka's KNN and Weka's NB all together, and then analyze results of these classifiers:
 
 - My KNN (with K = 1 and K = 5)
 - My NB
@@ -29,6 +25,17 @@ The following sections are all about results, and results comparisons with all t
 - Weka's Support Vector Machine (SMO)
 - Weka's Random Forest (RF)
 Note that all the following tests have been run with 10-fold cross-validation.
+
+
+### Results with all ttributes
+
+In this section we will explore results of classifiers when working on the full attributes set. In the following plot, results from my KNN, my NB, Weka's KNN and Weka's NB are put together and ready for a deeper discussion:
+
+<p align="center">
+  <img src="images/my_vs_weka.png" width="490"/>
+</p>
+
+
 
 #### Performance of my K-Nearest Neighbours classifier
 
