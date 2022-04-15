@@ -22,9 +22,17 @@ training_set = pd.read_csv("../data/pima-indians-diabetes.csv", header=None)
 k_nearest_neighbours_values = [1, 5, 10, 15, 20, 25, 30]
 print(k_nearest_neighbours_values)
 
-accuracies = calculate(k_nearest_neighbours_values, training_set)
-print(accuracies)
-plt.plot(k_nearest_neighbours_values, accuracies)
+# accuracies = calculate(k_nearest_neighbours_values, training_set)
+my_knn_accuracies = [68.486, 75.52, 75.517, 76.436, 75.923, 77.094, 76.575]
+wekas_knn_accuracies = [67.8385, 74.4792, 74.2188, 75.5208, 75.3906, 74.8698, 75.7813]
+my_nb_accuracies = [75.26, 75.26, 75.26, 75.26, 75.26, 75.26, 75.26]
+wekas_nb_accuracies = [75.1302, 75.1302, 75.1302, 75.1302, 75.1302, 75.1302, 75.1302]
+
+plt.plot(k_nearest_neighbours_values, my_knn_accuracies, color='orange', label='My KNN')
+plt.plot(k_nearest_neighbours_values, wekas_knn_accuracies, color='blue', label="Weka's KNN")
+plt.plot(k_nearest_neighbours_values, my_nb_accuracies, color='green', label="My NB")
+plt.plot(k_nearest_neighbours_values, wekas_nb_accuracies, color="purple", label="Weka's NB")
 plt.xlabel("Number of neighbours")
 plt.ylabel("Accuracy")
+plt.legend()
 plt.show()
