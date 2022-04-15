@@ -25,15 +25,24 @@ and the number of folds <i> S </i> we want to split the dataset into during the 
 
 First, let's see how the classifier performs with changes in K parameter. The parameter will change within [0, 30] with steps of 5:
 
-![](images/myknn.png)
+<p align="center">
+  <img src="images/myknn.png" width="510"/>
+</p>
 
-result -> [100.0, 82.418, 79.819, 79.819, 78.654, 79.048, 78.268]
+We can see how the accuracy generally grows with the number of neighbours taken into consideration, then it is quite stable stable once reached K = 15. This classifier has its minimum accuracy of 68.48% for K = 1 and its maximum of 77.09% for K = 25. 
+
+result -> [68.486, 75.52, 75.517, 76.436, 75.923, 77.094, 76.575]
 
 #### Efficiency of Weka's K-Nearest Neighbours classifier
 
 The test on the Weka's classifier is performed with same K values used for testing mine, and this is how it
 performs with changing K:
 
+<p align="center">
+  <img src="images/wekaknn.png" width="510"/>
+</p>
+
+We can see that also in this case the accuracy grows with the increasing of the number of neighbours and stabilises after K = 15. The Weka's classifier has its minimum efficiency of 67.83% for K = 1 and it maximum of 75.78% for K = 30.
 
 results -> k values = [1, 5, 10, 15, 20, 25, 30] -> [67.8385, 74.4792, 74.2188, 75.5208, 75.3906, 74.8698, 75.7813]
 
@@ -48,6 +57,15 @@ result -> 75.1302
 do the same as previous section but with selected attributes
 
 ### Comparison between the classifiers (accuracy, other advantages)
+
+In this section we will dive deeper in comparisons between different classifiers. The first two sub-sections are dedicated to a more precise comparison between my classifiers and Weka's, while in the further sub-sections other Weka's classifiers will be discussed and compared with my classifiers.
+
+#### My KNN vs Weka's KNN
+
+<p align="center">
+  <img src="myknn_vs_wekaknn.png" width="510"/>
+</p>
+
 
 - Put all what found in result section in the same plot (two plots for K variation and folds variation)
 
