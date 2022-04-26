@@ -21,7 +21,7 @@ from assignment2.classifiers import k_nearest_neighbours, naive_bayes
 
 
 # ACCURACY MEASURE
-training_set = pd.read_csv("data/pima-indians-diabetes.csv", header=None)
+training_set = pd.read_csv("data/pima-CFS.csv", header=None)
 testing_set = pd.read_csv("data/test_set_for_accuracy.csv", header=None)
 
 print("KNN ACCURACY")

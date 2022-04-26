@@ -1,0 +1,7 @@
+/evaluate_performances/
+/images/
+experiments.py
+/data/test_set_for_accuracy.csv
+/data/test_set_knn.csv
+/data/test_stratified_folds.csv
+README.md
